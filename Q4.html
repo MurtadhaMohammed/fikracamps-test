@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>combine two lists</title>
+</head>
+
+<body>
+    <h1>Question Four</h1>
+
+    <script>
+        
+        function combineArray(arrayOne, arrayTwo) {
+            if (arrayOne.length == arrayTwo.length) {
+                var newArray = [];
+                for (let i = 0; i < arrayOne.length; i++) {
+                    newArray.push(arrayOne[i])
+                    newArray.push(arrayTwo[i])
+                }
+
+                return newArray;
+            }
+
+            return 'input error!';
+        }
+
+        console.log(combineArray(['a', 'b', 'c'], [1, 2, 3]))
+    </script>
+</body>
+
+</html>

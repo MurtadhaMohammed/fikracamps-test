@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>user posts</title>
+</head>
+
+<body>
+    <h1>Question One</h1>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: 'https://jsonplaceholder.typicode.com/posts'
+            }).done(function (posts) {
+
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/comments'
+                }).done(function (comments) {
+                    let data = [];
+                    for (let i = 0; i < posts.length; i++) {
+                        posts[i].comment = comments.filter(function (el) { return el.postId == posts[i].id }); //retrive comments for each post
+                        data.push(posts[i]);
+                    }
+                    console.log(data)
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>get the data from the oscar.csv file</title>
+</head>
+
+<body>
+    <h1>Question Three</h1>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        // Note : use localhost to run this script
+        $(document).ready(function () {
+            var data;
+            $.ajax({
+                type: "GET",
+                url: "oscar.csv",
+                dataType: "text",
+                success: function (response) {
+                    const oscraArray = parseOscarData(response); // this function return oscar object from csv data
+                    console.log(actorWhoHasMoreOscars(oscraArray)) // first requirement
+                    console.log(oldestActresWhoGotOscar(oscraArray))// second requirement
+                    console.log(actorWhoGotMoreThanOscar(oscraArray))// 3th requirement
+
+                }
+            });
+        });
+
+        function actorWhoGotMoreThanOscar(oscraArray) { // return the actor who got more than oscar
+            var names = [];
+            oscraArray.map(function (el) { names.push(el.name) }) // push names into names array
+            var object = {};
+            var result = [];
+            names.forEach(function (item) { 
+                if (!object[item])
+                    object[item] = 0;
+                object[item] += 1;
+            })
+            for (var prop in object) {
+                if (object[prop] >= 2) {
+                    result.push(prop);
+                }
+            }
+            return result;
+        }
+        function oldestActresWhoGotOscar(oscraArray) { //return the actor who is the oldest actor or actress who got the Oscar
+            var years = [];
+            oscraArray.map(function (el) { years.push(el.year) })
+            const minYear = Math.min(...years)
+            var result = oscraArray.filter(function (el) { return el.year == minYear })[0]
+            return result
+        }
+        function actorWhoHasMoreOscars(oscraArray) { // return the actor who has more Oscars from the others
+            var names = [];
+            oscraArray.map(function (el) { names.push(el.name) })
+
+            var Frequent = 1;
+            var count = 0;
+            var item;
+            for (var i = 0; i < names.length; i++) {
+                for (var j = i; j < names.length; j++) {
+                    if (names[i] == names[j])
+                        count++;
+                    if (Frequent < count) {
+                        Frequent = count;
+                        item = names[i];
+                    }
+                }
+                count = 0;
+            }
+            return item + " ( " + Frequent + " times ) ";
+        }
+        function parseOscarData(response) {
+            var result = [];
+            var allRows = response.split(/\r?\n|\r/);
+            for (let row = 0; row < allRows.length - 1; row++) {
+                var rowCells = allRows[row].split(', ');
+                result.push({ 'index': rowCells[0], 'year': rowCells[1], 'age': rowCells[2], 'name': rowCells[3].replace(/"/g, ''), 'movei': rowCells[4].replace(/"/g, '') })
+            }
+
+            return result;
+        }
+    </script>
+</body>
+
+</html>
